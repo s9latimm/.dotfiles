@@ -19,7 +19,11 @@ def __walk(_path: Path) -> list[Path]:
 
 def main():
     parser = argparse.ArgumentParser(prog='minimize.py')
-    parser.add_argument('paths', nargs='*', default=['../build/'])
+    parser.add_argument(
+        'paths',
+        nargs='*',
+        default=['../build/'],
+    )
     parser.add_argument(
         '--replace',
         action='store_true',
@@ -28,7 +32,7 @@ def main():
     print(parser.format_help())
     args = parser.parse_args()
 
-    paths = [(Path(__file__).parent / path).resolve(strict=True) for path in args.paths]
+    paths = [(Path(__file__).parent / path).resolve(strict=False) for path in args.paths]
     files = []
     for path in paths:
         files += __walk(path)
