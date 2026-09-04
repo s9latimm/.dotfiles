@@ -38,10 +38,11 @@ def main():
         files += __walk(path)
 
     for file in files:
-        print(file.as_posix())
         suffix = file.suffix
-        minified = None
         if suffix in ['.json', '.html', '.js', '.css']:
+            print(file.as_posix())
+            minified = None
+
             content = file.read_text(encoding='utf-8')
             if len(content.splitlines()) <= 1:
                 continue
@@ -60,11 +61,11 @@ def main():
             elif suffix in ['.css']:
                 minified = rcssmin.cssmin(content, keep_bang_comments=False)
 
-        if minified is not None:
-            if args.replace:
-                file.write_text(minified)
-            else:
-                file.with_suffix('.min' + suffix).write_text(minified)
+            if minified is not None:
+                if args.replace:
+                    file.write_text(minified)
+                else:
+                    file.with_suffix('.min' + suffix).write_text(minified)
 
 
 if __name__ == '__main__':
